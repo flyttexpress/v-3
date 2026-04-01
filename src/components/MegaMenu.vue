@@ -60,7 +60,7 @@
             </NuxtLink>
             
             <!-- Level 3 -->
-            <div v-if="col.children.length > 0" class="flex flex-col gap-3">
+            <div v-if="col.children?.length > 0" class="flex flex-col gap-3">
               <div v-for="sub in col.children" :key="sub.link.uuid" class="flex flex-col gap-1.5">
                 <NuxtLink
                   :to="resolveLink(sub.link)"
@@ -72,7 +72,7 @@
                 </NuxtLink>
                 
                 <!-- Level 4 -->
-                <div v-if="sub.children.length > 0" class="flex flex-col gap-1.5 pl-3 mt-1 border-l-2 border-stone-100">
+                <div v-if="sub.children?.length > 0" class="flex flex-col gap-1.5 pl-3 mt-1 border-l-2 border-stone-100">
                   <NuxtLink
                     v-for="deep in sub.children"
                     :key="deep.link.uuid"
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import type { NavItem } from '../composables/useSiteNavigation'
 
@@ -140,10 +140,10 @@ const handleEscape = (e: KeyboardEvent) => {
 }
 
 // Helper formatting method
-const resolveLink = (link: any) => {
+const resolveLink = (link: { real_path?: string; path?: string; slug?: string }) => {
   let url = link.real_path || link.path || link.slug || ''
   // remove leading "pages/" or "/pages/"
-  url = url.replace(/^\/?pages\??\/?/, '')
+  url = url.replace(/^\/?pages\//, '')
   if (!url.startsWith('/')) url = '/' + url // ensure leading slash
   return url === '/home' ? '/' : url // root mapping
 }

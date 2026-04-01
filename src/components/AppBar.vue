@@ -32,7 +32,7 @@
             Loading...
           </div>
           <template v-else>
-            <template :key="item.href" v-for="(item, index) in menuItems">
+            <template :key="`desktop-${index}`" v-for="(item, index) in menuItems">
               <!-- Mega Menu Dropdown -->
               <MegaMenu v-if="item.isFolder" :title="item.title"
                 :navItem="item.navItem" />
@@ -61,7 +61,7 @@
     <template v-if="menuOpen">
       <div
         class="flex flex-col sm:hidden mt-2 pb-4 pt-2 gap-1 z-50 absolute top-full left-0 right-0 bg-white shadow-lg border-b border-stone-200">
-        <template :key="item.href" v-for="item in menuItems">
+        <template :key="`mobile-${index}`" v-for="(item, index) in menuItems">
           <!-- Expanding Accordion for Mobile Multi-Level Menu -->
           <details v-if="item.isFolder" class="group/mobile">
             <summary
@@ -126,7 +126,7 @@ const { globalStory, linksData, pending, getChildren, resolveLink } = useSiteNav
 
 // Determine if the link is active based on the current route
 const isActive = (href: string) => {
-  return route.path === href || (href !== '/' && route.path.startsWith(href))
+  return route.path === href || (href !== '/' && (route.path.startsWith(href + '/') || route.path === href))
 }
 
 const menuItems = computed(() => {
@@ -189,9 +189,5 @@ const menuItems = computed(() => {
   }).filter(Boolean)
 })
 
-onMounted(() => {
-  console.log(menuItems.value);
 
-  // Any extra client-side setup
-})
 </script>
