@@ -1,0 +1,8 @@
+[build]
+  framework = "nuxt"
+  command = "npm run build"
+  publish = "dist"
+
+[template.environment]
+  STORYBLOK_DELIVERY_API_TOKEN = "Change me to your space's Delivery API token"
+  STORYBLOK_API_BASE_URL = "https://api.storyblok.com"
